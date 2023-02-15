@@ -1,0 +1,272 @@
+/*---------------- reset all stiles ----------------------*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+main {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+a, a:hover, a:visited, a:active, a:focus{
+    outline: none;
+}
+
+/*---------------- main stiles ----------------------*/
+h2, input, li, button{
+    font-family: 'Arial', sans-serif;
+    font-style: normal;
+}
+
+.add-block-friends, .output-block-friends {
+    display: flex;
+    flex-direction: row;
+    padding: 24px;
+}
+
+.name-friend {
+    display: flex;
+    width: 300px;
+    padding: 5px 20px;
+    background: #FFFFFF;
+    border: 2px solid #E9E9E9;
+    border-radius: 3px;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+    color: #858585;
+    outline: none;
+}
+
+.date-friend {
+    display: flex;
+    margin-left: 10px;
+    padding: 5px 20px;
+    background: #FFFFFF;
+    border: 2px solid #E9E9E9;
+    border-radius: 3px;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+    color: #858585;
+    outline: none;
+}
+
+.btn-add {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    padding: 5px 30px;
+    background: #fff;
+    border: 2px solid #E21E32;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    color: #E21E32;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.btn-add:hover, .birthday-friends-edit-btn:hover{
+    transition: all .3s ease;
+    color: #fff;
+    background: #E21E32;
+}
+
+.birthday-friends {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    color: #202020;
+}
+
+.birthday-friends  li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border: 2px solid #E9E9E9;
+    border-radius: 3px;
+}
+
+.birthday-friends  li:last-child{
+    margin-bottom: 0;
+}
+
+.birthday-friends-delete-btn, .birthday-friends-edit-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 15px;
+    background: #fff;
+    border: 2px solid #E21E32;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 0;
+    color: #E21E32;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.birthday-friends-delete-btn:hover {
+    transition: all .3s ease;
+    color: #fff;
+    background: #E21E32;
+    transform: rotate(180deg);
+}
+
+.finish {
+    background: #E9E9E9;
+    border-radius: 3px;
+}
+
+.today {
+    color: #fff;
+    background: #34447B;
+    border-radius: 3px;
+}
+.error {
+    border: 2px solid #E21E32;
+}
