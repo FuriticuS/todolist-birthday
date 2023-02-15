@@ -19,6 +19,13 @@ const tasks = [
         date: '12.31.1999',
         completed: false,
         today: false,
+    },
+    {
+        id: Math.random(),
+        name: 'task 3',
+        date: '10.24.1239',
+        completed: false,
+        today: false,
     }
 ]
 
