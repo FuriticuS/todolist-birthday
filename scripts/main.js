@@ -36,7 +36,9 @@ function init() {
     //add localstorage on arrayTasks or []
     arrayTasks = tasks || [];
 
+    console.log(arrayTasks);
     renderTasks(arrayTasks);
+    completedTask(arrayTasks);
 }
 
 //render block birthday-friends
@@ -54,10 +56,10 @@ function renderTasks(tasks) {
 //create tasks fragment
 function createTasksFragment(tasks) {
     const fragment = document.createDocumentFragment();
+
     tasks.forEach(item => {
        fragment.append(createTasksElement(item))
     });
-    console.log(fragment)
     return fragment;
 }
 
@@ -72,7 +74,12 @@ function createTasksElement({id, name, date, completed, today}){
 
     // create p + text
     const p = document.createElement('p');
-    p.textContent = `${name} дата: ${date}`;
+    const span = document.createElement('span');
+    p.classList.add('text');
+    span.classList.add('date');
+    span.textContent = `${date}`;
+    p.textContent = `${name} дата: `;
+    p.append(span);
 
     // add buttons
     const deleteBtn = document.createElement('button');
@@ -84,13 +91,13 @@ function createTasksElement({id, name, date, completed, today}){
     editBtn.classList.add('birthday-friends-edit-btn');
 
     //add li element
-    li.append(p, editBtn, deleteBtn);
+    li.append(p,editBtn, deleteBtn);
 
     return li;
 }
 
 // add new tasks
-addFriendsBtn.addEventListener('click', function (e){
+addFriendsBtn.addEventListener('click', function (){
     const isValid = validationInput(nameFriend, dateFriend);
     if(!isValid){
         return;
@@ -101,19 +108,28 @@ addFriendsBtn.addEventListener('click', function (e){
 
 //validation input
 function validationInput(nameFriend, dateFriend){
+
     if(!nameFriend.value.trim().length){
         nameFriend.classList.add('error');
         nameFriend.value = 'Вы не указали имя';
+        return false;
     }
 
     if(!dateFriend.value.trim().length){
         dateFriend.classList.add('error');
+        return false;
     }
+     return true;
 }
 
 //create new man
 function createNewMan(nameFriend,dateFriend) {
-    arrayTasks.push(createNewTask(nameFriend,dateFriend));
+
+    const newFriend = createNewTask(nameFriend,dateFriend)
+    arrayTasks.push(newFriend);
+
+    // add task on page
+    birthdayFriends.insertAdjacentElement('beforeend', createTasksElement(newFriend));
 }
 
 // create new task
@@ -131,3 +147,41 @@ function createNewTask(name, date){
         today: date === today ? true : false,
     }
 }
+
+//functions delete edit
+birthdayFriends.addEventListener('click', function ({target}){
+    const targetAtr = target.classList.value;
+
+    switch (targetAtr) {
+        case 'birthday-friends-delete-btn':
+            deleteBtn(target)
+            break;
+        case 'birthday-friends-edit-btn':
+            editBtn(target)
+            break;
+    }
+})
+
+// delete btn on one li
+function deleteBtn(target){
+    const elemDelete = target.closest('li');
+    if(elemDelete.classList.contains('birthday-friends-item')){
+        elemDelete.remove();
+    }
+}
+
+// edit btn on one li
+function editBtn(target){
+    const elemEditName = target.closest('li').querySelector('.text');
+    const elemEditDate = target.closest('li').querySelector('.date');
+    console.log(elemEditName, elemEditDate, dateFriend.value);
+
+    nameFriend !== "" ? elemEditName.textContent = nameFriend.value : elemEditName.textContent;
+    dateFriend !== "" ? elemEditDate.textContent = dateFriend.value : elemEditDate.textContent;
+}
+
+// completed one li
+function completedTask(friends){
+    console.log(friends);
+}
+
