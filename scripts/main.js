@@ -114,12 +114,15 @@ function validationInput(nameFriend, dateFriend){
         nameFriend.value = 'Вы не указали имя';
         return false;
     }
-
-    if(!dateFriend.value.trim().length){
+    else if(!dateFriend.value.trim().length){
         dateFriend.classList.add('error');
         return false;
     }
-     return true;
+    else{
+        nameFriend.classList.remove('error');
+        dateFriend.classList.remove('error');
+    }
+    return true;
 }
 
 //create new man
@@ -129,7 +132,7 @@ function createNewMan(nameFriend,dateFriend) {
     arrayTasks.push(newFriend);
 
     // add task on page
-    birthdayFriends.insertAdjacentElement('beforeend', createTasksElement(newFriend));
+    return birthdayFriends.insertAdjacentElement('beforeend', createTasksElement(newFriend));
 }
 
 // create new task
@@ -172,12 +175,17 @@ function deleteBtn(target){
 
 // edit btn on one li
 function editBtn(target){
-    const elemEditName = target.closest('li').querySelector('.text');
-    const elemEditDate = target.closest('li').querySelector('.date');
-    console.log(elemEditName, elemEditDate, dateFriend.value);
 
-    nameFriend !== "" ? elemEditName.textContent = nameFriend.value : elemEditName.textContent;
-    dateFriend !== "" ? elemEditDate.textContent = dateFriend.value : elemEditDate.textContent;
+    const isValid = validationInput(nameFriend, dateFriend);
+    if(!isValid){
+        return;
+    }
+    const elemText = target.closest('li').querySelector('.text');
+    let spanDate = document.createElement('span');
+    spanDate.classList.add('date');
+    spanDate.textContent = `${dateFriend.value}`;
+    elemText.textContent = `${nameFriend.value} дата: `;
+    elemText.appendChild(spanDate);
 }
 
 // completed one li

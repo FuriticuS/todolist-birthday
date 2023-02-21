@@ -268,5 +268,6 @@ h2 {
     border-radius: 3px;
 }
 .error {
+    color: #E21E32;
     border: 2px solid #E21E32;
 }
