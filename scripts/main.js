@@ -2,21 +2,21 @@ const tasks = [
     {
         id: Math.random(),
         name: 'task 1',
-        date: '12.31.2000',
+        date: '12.10.2000',
         completed: true,
         today: false,
     },
     {
         id: Math.random(),
         name: 'task 2',
-        date: '15.10.2000',
+        date: '15.12.2000',
         completed: false,
         today: true,
     },
     {
         id: Math.random(),
         name: 'task 3',
-        date: '12.31.1999',
+        date: '12.04.1999',
         completed: false,
         today: false,
     }
@@ -38,7 +38,8 @@ function init() {
 
     console.log(arrayTasks);
     renderTasks(arrayTasks);
-    completedTask(arrayTasks);
+    sortArrayTasks(arrayTasks);
+    console.log(arrayTasks);
 }
 
 //render block birthday-friends
@@ -139,13 +140,14 @@ function createNewMan(nameFriend,dateFriend) {
 function createNewTask(name, date){
     //date verification
     let dateNow = new Date();
-    let today = dateNow.getFullYear() + '-' + String(dateNow.getMonth() + 1).padStart(2, '0') + '-' + String(dateNow.getDate()).padStart(2, '0');
+    let today = String(dateNow.getDate()).padStart(2, '0')+ '.' + String(dateNow.getMonth() + 1).padStart(2, '0') + '.' + dateNow.getFullYear();
+    let formatDate = `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
 
     // new task
     return {
         id: Math.random(),
         name,
-        date,
+        date: formatDate,
         completed: false,
         today: date === today ? true : false,
     }
@@ -188,8 +190,15 @@ function editBtn(target){
     elemText.appendChild(spanDate);
 }
 
-// completed one li
-function completedTask(friends){
-    console.log(friends);
+// sort friends birthday
+function sortArrayTasks(arrayTasks){
+    console.log(arrayTasks);
+
+    console.log(arrayTasks.sort(function (a,b){
+        let item1 = Date.parse(a.date);
+        let item2 = Date.parse(b.date);
+        console.log(item1, item2)
+        if(item1 > item2) return -1;
+    }))
 }
 
