@@ -2,23 +2,23 @@ const tasks = [
     {
         id: Math.random(),
         name: 'task 1',
-        date: '12.10.2000',
-        completed: true,
-        today: false,
+        date: '12.10.2050',
+        completed:false,
+        today:true,
     },
     {
         id: Math.random(),
         name: 'task 2',
         date: '15.12.2000',
-        completed: false,
-        today: true,
+        completed:true,
+        today:false,
     },
     {
         id: Math.random(),
         name: 'task 3',
         date: '12.04.1999',
-        completed: false,
-        today: false,
+        completed:false,
+        today:false,
     }
 ]
 
@@ -36,10 +36,8 @@ function init() {
     //add localstorage on arrayTasks or []
     arrayTasks = tasks || [];
 
-    console.log(arrayTasks);
-    renderTasks(arrayTasks);
     sortArrayTasks(arrayTasks);
-    console.log(arrayTasks);
+    renderTasks(arrayTasks);
 }
 
 //render block birthday-friends
@@ -59,13 +57,13 @@ function createTasksFragment(tasks) {
     const fragment = document.createDocumentFragment();
 
     tasks.forEach(item => {
-       fragment.append(createTasksElement(item))
+        fragment.append(createTasksElement(item))
     });
     return fragment;
 }
 
 //create tasks element
-function createTasksElement({id, name, date, completed, today}){
+function createTasksElement({id, name, date, completed, today}) {
 
     // create li + id + class for completed
     const li = document.createElement('li');
@@ -92,34 +90,32 @@ function createTasksElement({id, name, date, completed, today}){
     editBtn.classList.add('birthday-friends-edit-btn');
 
     //add li element
-    li.append(p,editBtn, deleteBtn);
+    li.append(p, editBtn, deleteBtn);
 
     return li;
 }
 
 // add new tasks
-addFriendsBtn.addEventListener('click', function (){
+addFriendsBtn.addEventListener('click', function () {
     const isValid = validationInput(nameFriend, dateFriend);
-    if(!isValid){
+    if (!isValid) {
         return;
     }
 
-    createNewMan(nameFriend.value,dateFriend.value);
+    createNewMan(nameFriend.value, dateFriend.value);
 })
 
 //validation input
-function validationInput(nameFriend, dateFriend){
+function validationInput(nameFriend, dateFriend) {
 
-    if(!nameFriend.value.trim().length){
+    if (!nameFriend.value.trim().length) {
         nameFriend.classList.add('error');
         nameFriend.value = 'Вы не указали имя';
         return false;
-    }
-    else if(!dateFriend.value.trim().length){
+    } else if (!dateFriend.value.trim().length) {
         dateFriend.classList.add('error');
         return false;
-    }
-    else{
+    } else {
         nameFriend.classList.remove('error');
         dateFriend.classList.remove('error');
     }
@@ -127,9 +123,9 @@ function validationInput(nameFriend, dateFriend){
 }
 
 //create new man
-function createNewMan(nameFriend,dateFriend) {
+function createNewMan(nameFriend, dateFriend) {
 
-    const newFriend = createNewTask(nameFriend,dateFriend)
+    const newFriend = createNewTask(nameFriend, dateFriend)
     arrayTasks.push(newFriend);
 
     // add task on page
@@ -137,24 +133,32 @@ function createNewMan(nameFriend,dateFriend) {
 }
 
 // create new task
-function createNewTask(name, date){
+function createNewTask(name, date) {
     //date verification
-    let dateNow = new Date();
-    let today = String(dateNow.getDate()).padStart(2, '0')+ '.' + String(dateNow.getMonth() + 1).padStart(2, '0') + '.' + dateNow.getFullYear();
     let formatDate = `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
+
+    let timeDate = +moment(formatDate, 'DD-MM-YYYY').format('X');
+    let today = +moment(new Date()).format('X');
+
+    // получить getDate(); и сравнить
+    let  todayDay = new Date().getDay();
+    if(today === timeDate){
+        todayDay = true;
+    }
+    console.log(todayDay, today, timeDate, today - timeDate)
 
     // new task
     return {
         id: Math.random(),
         name,
         date: formatDate,
-        completed: false,
-        today: date === today ? true : false,
+        completed: today > timeDate ? true : false,
+        today: todayDay,
     }
 }
 
 //functions delete edit
-birthdayFriends.addEventListener('click', function ({target}){
+birthdayFriends.addEventListener('click', function ({target}) {
     const targetAtr = target.classList.value;
 
     switch (targetAtr) {
@@ -168,18 +172,18 @@ birthdayFriends.addEventListener('click', function ({target}){
 })
 
 // delete btn on one li
-function deleteBtn(target){
+function deleteBtn(target) {
     const elemDelete = target.closest('li');
-    if(elemDelete.classList.contains('birthday-friends-item')){
+    if (elemDelete.classList.contains('birthday-friends-item')) {
         elemDelete.remove();
     }
 }
 
 // edit btn on one li
-function editBtn(target){
+function editBtn(target) {
 
     const isValid = validationInput(nameFriend, dateFriend);
-    if(!isValid){
+    if (!isValid) {
         return;
     }
     const elemText = target.closest('li').querySelector('.text');
@@ -191,14 +195,10 @@ function editBtn(target){
 }
 
 // sort friends birthday
-function sortArrayTasks(arrayTasks){
-    console.log(arrayTasks);
-
-    console.log(arrayTasks.sort(function (a,b){
-        let item1 = Date.parse(a.date);
-        let item2 = Date.parse(b.date);
-        console.log(item1, item2)
-        if(item1 > item2) return -1;
-    }))
+function sortArrayTasks(arrayTasks) {
+    arrayTasks.sort(function (a, b) {
+        let item1 = +moment(a.date, 'DD.MM.YYYY').format('X');
+        let item2 = +moment(b.date, 'DD.MM.YYYY').format('X');
+        return item1 - item2;
+    })
 }
-
