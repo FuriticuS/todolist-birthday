@@ -1,41 +1,20 @@
-const tasks = [
-    {
-        id: Math.random(),
-        name: 'task 1',
-        date: '12.10.2050',
-        completed:false,
-        today:true,
-    },
-    {
-        id: Math.random(),
-        name: 'task 2',
-        date: '15.12.2000',
-        completed:true,
-        today:false,
-    },
-    {
-        id: Math.random(),
-        name: 'task 3',
-        date: '12.04.1999',
-        completed:false,
-        today:false,
-    }
-]
-
 const nameFriend = document.getElementById('name-friend');
 const dateFriend = document.getElementById('date-friend');
 const addFriendsBtn = document.getElementById('add-friend');
 const birthdayFriends = document.querySelector('.birthday-friends');
 let arrayTasks = [];
+let editLi = false;
 
 //load page
 window.addEventListener('load', init);
 
 //initializing
 function init() {
-    //add localstorage on arrayTasks or []
-    arrayTasks = tasks || [];
+    // load localstorage array of tasks
+    const tasks = JSON.parse(localStorage.getItem('birthday')) || [];
 
+    //add localstorage on arrayTasks or []
+    arrayTasks = tasks;
     sortArrayTasks(arrayTasks);
     renderTasks(arrayTasks);
 }
@@ -97,12 +76,13 @@ function createTasksElement({id, name, date, completed, today}) {
 
 // add new tasks
 addFriendsBtn.addEventListener('click', function () {
-    const isValid = validationInput(nameFriend, dateFriend);
-    if (!isValid) {
-        return;
+    if(!editLi){
+        const isValid = validationInput(nameFriend, dateFriend);
+        if (!isValid) {
+            return;
+        }
+        createNewMan(nameFriend.value, dateFriend.value);
     }
-
-    createNewMan(nameFriend.value, dateFriend.value);
 })
 
 //validation input
@@ -118,8 +98,9 @@ function validationInput(nameFriend, dateFriend) {
     } else {
         nameFriend.classList.remove('error');
         dateFriend.classList.remove('error');
+        return true;
     }
-    return true;
+
 }
 
 //create new man
@@ -137,12 +118,12 @@ function createNewTask(name, date) {
     //date verification
     let formatDate = `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
 
-    let timeDate = +moment(formatDate, 'DD-MM-YYYY').format('X');
+    let timeDate = +moment(formatDate, 'YYYY-MM-DD').format('X');
     let today = +moment(new Date()).format('X');
 
     // получить getDate(); и сравнить
-    let  todayDay = new Date().getDay();
-    if(today === timeDate){
+    let todayDay = new Date().getDay();
+    if (today === timeDate) {
         todayDay = true;
     }
 
@@ -176,28 +157,66 @@ function deleteBtn(target) {
     if (elemDelete.classList.contains('birthday-friends-item')) {
         elemDelete.remove();
     }
+
+    const elemId = elemDelete.id;
+    arrayTasks.findIndex(item => {
+        if (item.id === +elemId) {
+           return arrayTasks.splice(item.id,1);
+        }
+    })
+
 }
 
 // edit btn on one li
 function editBtn(target) {
+    editLi = true;
+    target.closest('li').style = "border: 2px solid red";
 
     const isValid = validationInput(nameFriend, dateFriend);
     if (!isValid) {
         return;
     }
+    editBtnTaks(target);
+
+    target.closest('li').style = "border: none";
+    editLi = false;
+}
+function editBtnTaks(target){
     const elemText = target.closest('li').querySelector('.text');
     let spanDate = document.createElement('span');
     spanDate.classList.add('date');
-    spanDate.textContent = `${dateFriend.value}`;
+    spanDate.textContent = `${moment(dateFriend.value, 'YYYY-MM-DD').format('DD.MM.YYYY')}`;
     elemText.textContent = `${nameFriend.value} дата: `;
     elemText.appendChild(spanDate);
+
+    let nameEdit = nameFriend.value;
+    let dateEdit = spanDate.textContent;
+
+    const elemId = target.closest('li').id;
+    arrayTasks = arrayTasks.map(item => {
+        if (item.id === +elemId) {
+            return {
+                ...item,
+                name: nameEdit,
+                date: dateEdit
+            }
+        }else{return item}
+    })
 }
 
 // sort friends birthday
 function sortArrayTasks(arrayTasks) {
-    arrayTasks.sort(function (a, b) {
-        let item1 = +moment(a.date, 'DD.MM.YYYY').format('X');
-        let item2 = +moment(b.date, 'DD.MM.YYYY').format('X');
-        return item1 - item2;
-    })
+    if (arrayTasks != null){
+        arrayTasks.sort(function (a, b) {
+            let item1 = +moment(a.date, 'DD.MM.YYYY').format('X');
+            let item2 = +moment(b.date, 'DD.MM.YYYY').format('X');
+            return item1 - item2;
+        })
+    }
+
 }
+
+//load localstorage items
+window.addEventListener('unload', () => {
+    localStorage.setItem('birthday', JSON.stringify(arrayTasks));
+})
