@@ -145,7 +145,6 @@ function createNewTask(name, date) {
     if(today === timeDate){
         todayDay = true;
     }
-    console.log(todayDay, today, timeDate, today - timeDate)
 
     // new task
     return {
@@ -153,7 +152,7 @@ function createNewTask(name, date) {
         name,
         date: formatDate,
         completed: today > timeDate ? true : false,
-        today: todayDay,
+        today: moment(formatDate, ('DD.MM.YYYY')).format('DD.MM.YYYY') === moment().format('DD.MM.YYYY') ? true : false,
     }
 }
 
