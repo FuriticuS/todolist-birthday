@@ -118,7 +118,7 @@ function createNewTask(name, date) {
     //date verification
     let formatDate = `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
 
-    let timeDate = +moment(formatDate, 'YYYY-MM-DD').format('X');
+    let timeDate = +moment(formatDate, 'DD.MM.YYYY').format("X");
     let today = +moment(new Date()).format('X');
 
     // получить getDate(); и сравнить
